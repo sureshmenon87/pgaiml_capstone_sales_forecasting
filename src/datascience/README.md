@@ -226,3 +226,138 @@ Top performing restaurants by total sales:
 - Restaurant performance is uneven and skewed
 - Calendar-based features are essential for forecasting
 - A clean, reproducible master dataset has been established
+
+## ▶ How to Run Data Science Pipeline
+
+This project is designed to be executed using **pure Python scripts** (no notebooks).
+
+### 1️⃣ Prerequisites
+
+- Python **3.9+** (tested on Python 3.13)
+- Recommended: virtual environment
+
+Install required dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+### 2️⃣ Project Structure Requirement
+
+Ensure the following structure is present before running:
+
+```text
+data/
+ ├── raw/
+ │   ├── restaurants.csv
+ │   ├── items.csv
+ │   └── sales.csv
+ └── processed/
+
+outputs/
+ └── figures/
+```
+
+Raw data must be placed **only** inside `data/raw/`.
+
+---
+
+### 3️⃣ Step 1: Ingestion & Validation
+
+This step:
+
+- Loads raw CSV files
+- Validates schema and referential integrity
+- Stops execution if data is structurally invalid
+
+Run from **project root**:
+
+```bash
+python -m scripts.run_ingestion_validation
+```
+
+Expected output:
+
+```text
+[INFO] Loading restaurants data
+[INFO] Loading items data
+[INFO] Loading sales data
+[INFO] Validating restaurants data
+[INFO] Validating items data
+[INFO] Validating sales data
+Ingestion and validation completed successfully
+```
+
+---
+
+### 4️⃣ Step 2: Preprocessing & Merge
+
+This step:
+
+- Applies business rules (e.g., removes non-positive sales)
+- Enforces join-key data types
+- Merges datasets into a single master table
+- Creates derived features such as `sales_amount`
+
+Run:
+
+```bash
+python -m scripts.run_preprocessing
+```
+
+Output:
+
+```text
+data/processed/master_sales.csv
+```
+
+---
+
+### 5️⃣ Step 3: Exploratory Data Analysis (EDA)
+
+This step:
+
+- Performs time-based and categorical analysis
+- Generates business-relevant plots
+- Saves all visualizations to disk
+
+Run:
+
+```bash
+python -m scripts.run_eda
+```
+
+Generated plots:
+
+```text
+outputs/figures/
+ ├── daily_sales_trend.png
+ ├── weekday_sales.png
+ ├── monthly_sales_trend.png
+ └── quarterly_sales.png
+```
+
+---
+
+### 6️⃣ Execution Order (Important)
+
+Steps must be run **in sequence**:
+
+```text
+1. Ingestion & Validation
+2. Preprocessing & Merge
+3. EDA
+```
+
+Each step depends on artifacts created by the previous step.
+
+---
+
+## 🧠 Why Script-Based Execution?
+
+- Ensures reproducibility
+- Avoids hidden notebook state
+- Matches production ML pipelines
+- Enables easy automation and CI/CD integration
