@@ -1,5 +1,3 @@
----
-
 # 📊 Sales Forecasting – Data Science (EDA & Preprocessing)
 
 ## 1. Project Overview
